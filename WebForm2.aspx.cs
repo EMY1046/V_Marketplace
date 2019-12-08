@@ -25,48 +25,64 @@ namespace Web_Vindeed
 
         protected void Page_Load(object sender, EventArgs e)
         {
-           
-            /*
-            SqlCommand sqlCmd;
-            SqlDataAdapter sqlAdapter;
-            SqlConnection con = new SqlConnection();
-            //con.ConnectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=V_indeed;Integrated Security=True";
-            con.ConnectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=V_indeed;Integrated Security=True";
-           
-    */
-         //   con.ConnectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=V_indeed;Integrated Security=True";
+
+
+            if (con.State == ConnectionState.Open)
+            {
+                con.Close();
+            }
+            Login logInfo = new Login();
+            if (logInfo.User_Email != null)
+            {
+                logInfo.User_Email = "";
+                logInfo.User_Password = "";
+                logInfo.User_Role = "";
+                lblmessage.Text = "You have been logout, please login again if need to.";
+            }
+
 
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
 
-            if (EmailValidation.IsValidEmail(txtUserName.Text))
+            if ((EmailValidation.IsValidEmail(txtUserName.Text)) && txtPassword.Text !="")
             {
                 con.ConnectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=V_indeed;Integrated Security=True";
-                string QuantcommandString = "select * from login where User_Email = '" + txtUserName.Text + "'and User_Password='" + txtPassword.Text + "'";
-                SqlCommand commandQuant = new SqlCommand(QuantcommandString, con);
+                string QuantcommandString = "select * from VLogin where User_Email = '" + txtUserName.Text + "'and User_Password='" + txtPassword.Text + "'and User_Activated =1";
+                SqlCommand commandselect = new SqlCommand(QuantcommandString, con);
 
                 if (con.State == ConnectionState.Closed)
                 {
                     con.Open();
                 }
-                SqlDataReader rdr = commandQuant.ExecuteReader();
+               // commandselect.Parameters.AddWithValue("@User_Activated", '1');
+                SqlDataReader rdr = commandselect.ExecuteReader();
                 if (rdr.Read())
                 {
                     //WebForm1 form2 = new WebForm1(tempSoldier);
 
-
-                    lblmessage.Text = "User found";
                     Login logInfo = new Login();
                     logInfo.User_Email = txtUserName.Text;
                     logInfo.User_Password = txtPassword.Text;
+                    logInfo.User_Role = rdr["User_Role"].ToString();
+                    Session["user"] = rdr["User_Role"].ToString();
+                    if (rdr["User_Role"].ToString() == "Organization")
+                    {
+                        Response.Redirect("JobPost.aspx");
+                    }
+                    else
+                    {
+                        Response.Redirect("WebForm1.aspx");
+                    }
+
+
                     Response.Redirect("WebForm1.aspx");
 
                 }
                 else
                 {
-                    lblmessage.Text = "Login incorrect or not yet registered";
+                    lblmessage.Text = " incorrect login or not yet registered or activated";
                 }
                 rdr.Close();
                 con.Close();
@@ -74,6 +90,15 @@ namespace Web_Vindeed
             else {
                 lblmessage.Text = "incorrect login information";
             }
+        }
+
+        protected void btnCancel_Click(object sender, EventArgs e)
+        {
+            //   Response.Redirect("JobPost.aspx");
+            lblmessage.Text = "";
+            txtUserName.Text="";
+            txtPassword.Text="";
+            txtUserName.Focus();
         }
     }
 }

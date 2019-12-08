@@ -25,17 +25,16 @@
         <tr>
             <td style="width: 227px; height: 20px"></td>
             <td style="height: 20px">
-                <asp:Label runat="server" Text="Label"></asp:Label>
                 &nbsp;<asp:Label ID="lblmessage" runat="server"></asp:Label>
             </td>
             <td style="height: 20px"></td>
         </tr>
         <tr>
             <td style="width: 227px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <asp:Button ID="btnCancel" runat="server" Text="Cancel" />
+                <asp:Button ID="btnCancel" runat="server" Text="Cancel" OnClick="btnCancel_Click" />
             </td>
             <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <asp:Button ID="btnSubmit" runat="server" Text="Submit" OnClick="btnSubmit_Click" />
+                <asp:Button ID="btnSubmit" runat="server" Text="Submit" OnClick="btnSubmit_Click" style="height: 26px" />
                 &nbsp;</td>
             <td>&nbsp;</td>
         </tr>
