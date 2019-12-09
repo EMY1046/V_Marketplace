@@ -22,10 +22,11 @@ namespace Web_Vindeed
 
         //  this.InitializeComponent();
         //     }
-       Login logDetails= new Login();
-       SqlConnection con = new SqlConnection();
-       SqlCommand sqlCmd;
+       Login          logDetails = new Login();
+       SqlConnection  con        = new SqlConnection();
+       SqlCommand     sqlCmd;
        SqlDataAdapter sqlAdapter;
+        
         protected void Page_Load(object sender, EventArgs e)
         {
             con.ConnectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=V_indeed;Integrated Security=True";
@@ -33,16 +34,13 @@ namespace Web_Vindeed
             try
             {
                 if ((logDetails.User_Email != null) && (logDetails.User_Password != null) && (logDetails.User_Role== "Volunteer"))
-                {
-                   
+                {                   
                     //con.ConnectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=V_indeed;Integrated Security=True";
-                    string commandString = "select Type,Position,ZipCode,City,Job_Description,Start_Date,End_Date, Reference_Number from OrganizationJobPosted ";
-
+                    string commandString = "select Type,Position,ZipCode,City,Job_Description,Start_Date,End_Date, Reference_Number from OrganizationJobPosted ";                    
+                    sqlCmd               = new SqlCommand(commandString, con);
+                    sqlAdapter           = new SqlDataAdapter(commandString, con);
+                    DataSet ds           = new DataSet();
                     
-
-        sqlCmd = new SqlCommand(commandString, con);
-                    sqlAdapter = new SqlDataAdapter(commandString, con);
-                    DataSet ds = new DataSet();
                     if (con.State == ConnectionState.Closed)
                     {
                         con.Open();
@@ -60,10 +58,11 @@ namespace Web_Vindeed
                     grdViewJobs.AutoGenerateSelectButton = false;
                     //string  commandString = "select Type,Position,ZipCode,City,Job_Description,Start_Date,End_Date from JobPosted where ZipCode='" + txtLocation.Text + "'";
 
-                    string commandString = "select Type,Position,ZipCode,City,Job_Description,Start_Date,End_Date, Reference_Number from OrganizationJobPosted";
-                    sqlCmd = new SqlCommand(commandString, con);
-                    sqlAdapter = new SqlDataAdapter(commandString, con);
-                    DataSet ds = new DataSet();
+                    string commandString  = "select Type,Position,ZipCode,City,Job_Description,Start_Date,End_Date, Reference_Number from OrganizationJobPosted";
+                    sqlCmd                = new SqlCommand(commandString, con);
+                    sqlAdapter            = new SqlDataAdapter(commandString, con);
+                    DataSet ds            = new DataSet();
+                    
                     if (con.State == ConnectionState.Closed)
                     {
                         con.Open();
@@ -118,75 +117,93 @@ namespace Web_Vindeed
             // the first name.
             grdViewJobs.AutoGenerateSelectButton = false;
 
-
-            logDetails.Type_ = grdViewJobs.SelectedRow.Cells[2].Text;
-            logDetails.Position_ = grdViewJobs.SelectedRow.Cells[3].Text;
-            logDetails.Zip_Code = grdViewJobs.SelectedRow.Cells[4].Text;
-            logDetails.City_ = grdViewJobs.SelectedRow.Cells[5].Text;
-            logDetails.Job_Description = grdViewJobs.SelectedRow.Cells[6].Text;
-            logDetails.Start_Date = grdViewJobs.SelectedRow.Cells[7].Text;
-            logDetails.End_Date = grdViewJobs.SelectedRow.Cells[8].Text;
+            logDetails.Type_            = grdViewJobs.SelectedRow.Cells[2].Text;
+            logDetails.Position_        = grdViewJobs.SelectedRow.Cells[3].Text;
+            logDetails.Zip_Code         = grdViewJobs.SelectedRow.Cells[4].Text;
+            logDetails.City_            = grdViewJobs.SelectedRow.Cells[5].Text;
+            logDetails.Job_Description  = grdViewJobs.SelectedRow.Cells[6].Text;
+            logDetails.Start_Date       = grdViewJobs.SelectedRow.Cells[7].Text;
+            logDetails.End_Date         = grdViewJobs.SelectedRow.Cells[8].Text;
             logDetails.REference_Number = grdViewJobs.SelectedRow.Cells[9].Text;
+            
             Response.Redirect("Job_Application_Form.aspx");
 
         }
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            string columns = null;
-            string commandString = null;
+            string         columns       = null;
+            string         commandString = null;
             SqlDataAdapter sqlAdapter2;
+            
             grdViewJobs.AutoGenerateSelectButton = false;
 
             if((rdbtnLocation.SelectedIndex != -1) && (txtLocation.Text==""))
             {
-                grdViewJobs.Visible = false;
-                lblMessage.Text = "Please specify the location";
+                grdViewJobs.Visible  = false;
+                lblMessage.Text      = "Please specify the location";
                 lblMessage.ForeColor = System.Drawing.Color.DarkOrange;
                 return;
             }
 
 
-            if (((rdbtnLocation.SelectedIndex == -1) || (rdbtnLocation.SelectedIndex == 2)) && (ddlJobtype.SelectedIndex == 0))
+            if (((rdbtnLocation.SelectedIndex == -1) || 
+                    (rdbtnLocation.SelectedIndex == 2)) && 
+                (ddlJobtype.SelectedIndex == 0))
             {
-                commandString = "select Type,Position,ZipCode,City,Job_Description,Start_Date,End_Date,Reference_Number from OrganizationJobPosted";
+                commandString = "select Type,Position,ZipCode,City,Job_Description" +
+                                "Start_Date,End_Date,Reference_Number from OrganizationJobPosted";
             }
-            if (((rdbtnLocation.SelectedIndex == -1) || (rdbtnLocation.SelectedIndex == 2)) && (ddlJobtype.SelectedIndex != 0))
+            if (((rdbtnLocation.SelectedIndex == -1) || 
+                    (rdbtnLocation.SelectedIndex == 2)) && 
+                (ddlJobtype.SelectedIndex != 0))
             {
-                commandString = "select Type,Position,ZipCode,City,Job_Description,Start_Date,End_Date,Reference_Number from OrganizationJobPosted where Type ='" + ddlJobtype.SelectedValue.ToString() + "'";
+                commandString = "select Type,Position,ZipCode,City,Job_Description," + 
+                                "Start_Date,End_Date,Reference_Number from OrganizationJobPosted" + 
+                                "where Type ='" + ddlJobtype.SelectedValue.ToString() + "'";
             }
 
             if ((rdbtnLocation.SelectedIndex == 0) && (ddlJobtype.SelectedIndex == 0))
             {
-
                 //columns = "ZipCode";
                // commandString = "select Type,Position,ZipCode,City,Job_Description,Start_Date,End_Date from JobPosted where " + columns + "='" + txtLocation.Text + "'";
-                commandString = "select Type,Position,ZipCode,City,Job_Description,Start_Date,End_Date,Reference_Number from OrganizationJobPosted where ZipCode='" + txtLocation.Text + "'";
+                commandString = "select Type,Position,ZipCode,City,Job_Description" + 
+                                ",Start_Date,End_Date,Reference_Number from OrganizationJobPosted" + 
+                                "where ZipCode='" + txtLocation.Text + "'";
 
             }
             else if ((rdbtnLocation.SelectedIndex == 1) && (ddlJobtype.SelectedIndex == 0))
             {
                 columns = "City";
-                commandString = "select Type,Position,ZipCode,City,Job_Description,Start_Date,End_Date,Reference_Number from OrganizationJobPosted where " + columns + "='" + txtLocation.Text + "'";
+                commandString = "select Type,Position,ZipCode,City,Job_Description" + 
+                                ",Start_Date,End_Date,Reference_Number from OrganizationJobPosted where " + 
+                                columns + "='" + txtLocation.Text + "'";
 
             }
 
             if ((rdbtnLocation.SelectedIndex == 0) && (ddlJobtype.SelectedIndex != 0))
             {
-                commandString = "select Type,Position,ZipCode,City,Job_Description,Start_Date,End_Date, Reference_Number from OrganizationJobPosted where Type ='" + ddlJobtype.SelectedValue.ToString() + "'and ZipCode='" + txtLocation.Text + "'";
+                commandString = "select Type,Position,ZipCode,City,Job_Description" + 
+                                ",Start_Date,End_Date, Reference_Number from OrganizationJobPosted where" +
+                                " Type ='" + ddlJobtype.SelectedValue.ToString() + 
+                                "'and ZipCode='" + txtLocation.Text + "'";
             }
             if ((rdbtnLocation.SelectedIndex == 1) && (ddlJobtype.SelectedIndex != 0))
             {
-                commandString = "select Type,Position,ZipCode,City,Job_Description,Start_Date,End_Date, Reference_Number from OrganizationJobPosted where Type ='" + ddlJobtype.SelectedValue.ToString() + "'and City='" + txtLocation.Text + "'";
+                commandString = "select Type,Position,ZipCode,City,Job_Description" + 
+                                ",Start_Date,End_Date, Reference_Number from OrganizationJobPosted where" + 
+                                " Type ='" + ddlJobtype.SelectedValue.ToString() + 
+                                "'and City='" + txtLocation.Text + "'";
             }
 
 
 
             //commandString = "select Type,Position,ZipCode,City,Job_Description,Start_Date,End_Date from JobPosted where" + columns + "='" + txtLocation.Text+"'";
-            sqlCmd = new SqlCommand(commandString, con);
-            sqlAdapter2 = new SqlDataAdapter(commandString, con);
-            DataSet ds = new DataSet();
+            sqlCmd       = new SqlCommand(commandString, con);
+            sqlAdapter2  = new SqlDataAdapter(commandString, con);
+            DataSet ds   = new DataSet();
             DataTable dt = new DataTable();
+            
             if (con.State == ConnectionState.Closed)
             {
                 con.Open();
@@ -215,9 +232,10 @@ namespace Web_Vindeed
                          grdViewJobs.DataBind();
                          */
 
-                        sqlCmd = new SqlCommand(commandString, con);
-                        sqlAdapter = new SqlDataAdapter(commandString, con);
-                        DataSet ds1 = new DataSet();
+                        sqlCmd      = new SqlCommand    (commandString, con);
+                        sqlAdapter  = new SqlDataAdapter(commandString, con);
+                        DataSet ds1 = new DataSet       ();
+                        
                         if (con.State == ConnectionState.Closed)
                         {
                             con.Open();
@@ -231,8 +249,8 @@ namespace Web_Vindeed
                     }
                     else
                     {
-                        grdViewJobs.Visible = false;
-                        lblMessage.Text = "No job at that location";
+                        grdViewJobs.Visible  = false;
+                        lblMessage.Text      = "No job at that location";
                         lblMessage.ForeColor = System.Drawing.Color.DarkOrange;
                     }
                 }
