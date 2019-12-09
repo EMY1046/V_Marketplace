@@ -21,164 +21,66 @@ namespace Web_Vindeed
         static string REferenceNumber;
 
 
-
-
         public string Type_
         {
-            get
-            {
-                return Type;
-            }
-            set
-            {
-                Type = value;
-            }
-
+            get { return Type;  }
+            set { Type = value; }
         }
-
         public string Position_
         {
-            get
-            {
-                return Position;
-            }
-            set
-            {
-                Position = value;
-            }
-
+            get { return Position;  }
+            set { Position = value; }
         }
-
         public string Zip_Code
         {
-            get
-            {
-                return ZipCode;
-            }
-            set
-            {
-                ZipCode = value;
-            }
-
+            get { return ZipCode;  }
+            set { ZipCode = value; }
         }
-
         public string City_
         {
-            get
-            {
-                return City;
-            }
-            set
-            {
-                City = value;
-            }
-
+            get { return City;  }
+            set { City = value; }
         }
-
         public string Job_Description
         {
-            get
-            {
-                return JobDescription;
-            }
-            set
-            {
-                JobDescription = value;
-            }
-
+            get { return JobDescription;  }
+            set { JobDescription = value; }
         }
-        
         public string Start_Date
         {
-            get
-            {
-                return StartDate;
-            }
-            set
-            {
-                StartDate = value;
-            }
+            get { return StartDate;  }
+            set { StartDate = value; }
 
         }
-
         public string End_Date
         {
-            get
-            {
-                return EndDate;
-            }
-            set
-            {
-                EndDate = value;
-            }
-
+            get { return EndDate;  }
+            set { EndDate = value; }
         }
-
-
         public string User_Role
         {
-            get
-            {
-                return UserRole;
-            }
-            set
-            {
-                UserRole = value;
-            }
-
+            get { return UserRole;  }
+            set { UserRole = value; }
         }
-
         public string User_Email
         {
-            get
-            {
-                return Usermail;
-            }
-            set
-            {
-                Usermail = value;
-            }
-
+            get { return Usermail;  }
+            set { Usermail = value; }
         }
-
         public string Organization_mail
         {
-            get
-            {
-                return Organizationmail;
-            }
-            set
-            {
-                Organizationmail = value; 
-            }
-        
+            get { return Organizationmail;  }
+            set { Organizationmail = value; }
         }
-
         public string REference_Number
         {
-            get
-            {
-                return REferenceNumber;
-            }
-            set
-            {
-                REferenceNumber = value;
-            }
-
+            get { return REferenceNumber;  }
+            set { REferenceNumber = value; }
         }
-
-        
         public string User_Password
         {
-            get
-            {
-                return UserPassword;
-            }
-            set
-            {
-                UserPassword = value;
-            }
-
+            get { return UserPassword;  }
+            set { UserPassword = value; }
         }
     }
 }
